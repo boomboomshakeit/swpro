@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>응급실 찾기</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        #map {
+            width: 50%;
+            height: 100%;
+        }
+        #list {
+            width: 50%;
+            height: 100%;
+            overflow-y: auto; 
+            padding: 20px;
+        }
+    </style>
+    <script src="api주소"></script>
+    <script>
+      function Map() {
+        var location = {lat: , lng: }; 
+        var map = api, {
+          center: location
+        });
+        var marker = ({
+          position: location,
+          map: map
+        });
+      }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="map"></div> 
+        <div id="list">
+            <h2>응급실 리스트</h2>
+            <p>응급실 1</p>
+            <p>응급실 2</p>
+        </div>
+    </div>
+</body>
+</html>
