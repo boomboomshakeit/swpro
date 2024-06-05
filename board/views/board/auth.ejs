@@ -1,0 +1,24 @@
+<%- include("../include/header") -%>
+
+<div class="container">
+	<h3 class="mb-5">게시글<%=title%></h3>
+
+	<div class="container">
+		<div class="text-center mb-5">
+			<p>게시글번호 : <%=idx%></p>
+			<p><%=title%>하시려면 게시글 비밀번호를 입력해주세요.</p>
+		</div>
+		<div class="container w-50">
+			<form action="/board/<%=type%>/<%=idx%>" method="post">
+				<div class="input-group mb-5">
+					<input type="password" class="form-control" placeholder="게시글 비밀번호" name="password">
+					<input type="submit" class="btn btn-primary" value="<%=title%>">
+				</div>
+			</form>
+		</div>
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			<a href="/board/view/<%=idx%>" class="btn btn-primary">돌아가기</a>
+		</div>
+	</div>
+
+	<%- include("../include/footer") -%>
