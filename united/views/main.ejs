@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>응급실, 약국 찾아주기 사이트</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>사이트이름</h1>
+            <table width="100%">
+              <tr>
+                <td align="right">
+                  <% if (!user.username) { %> <!-- 사용자가 로그인하지 않은 경우에만 회원가입, 로그인 링크를 표시 -->
+                    <a href="signup">회원가입</a> | 
+                    <a href="login">로그인</a> |
+                  <% } else { %> <!-- 사용자가 로그인한 경우 로그아웃 링크를 표시 -->
+                    <a href="logout">로그아웃</a> |
+                  <% } %>
+                  <a href="mypage">마이페이지</a> |
+                  <a href="board">고객 게시판</a> |
+                  <a href="wishlist">찜리스트</a>
+                </td>
+              </tr>
+            </table>
+            <form action="search" method="get">
+                <div class="search">
+                    <input type="text">
+                    <button type="submit">검색</button>
+                </div>
+            </form>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <a href="emergency">응급실</a>
+            <a href="pharmacy">약국</a>
+        </div>
+    </main>
+</body>
+</html>
