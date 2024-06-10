@@ -1,1 +1,21 @@
-브랜치 수정
+DROP PROCEDURE IF EXISTS while_proc;
+DELIMITER $$
+
+CREATE PROCEDURE while_proc(
+    IN usernum INT,
+    OUT hap INT
+)
+BEGIN
+    DECLARE i INT;
+    SET hap = 0, i = 1;
+    WHILE (i <= usernum) DO
+        SET hap = hap + i;
+        SET i = i + 1;
+    END WHILE;
+END $$
+
+DELIMITER ;
+
+CALL while_proc(100, @hap);
+
+SELECT @hap AS 합계;
