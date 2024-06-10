@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>응급실, 약국 찾아주기 사이트</title>
+    <link rel="stylesheet" href="styleMain.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<table>
+  <tr>
+    <td align="right">
+      <a href="signup.html">회원가입</a> | 
+      <a href="login.html">로그인</a> |
+      <a href="mypage.html">마이페이지</a> |
+      <a href="board.html">고객 게시판</a> |
+      <a href="wishlist.html">찜리스트</a>
+    </td>
+  </tr>
+</table>
+
+<footer>
+
+<form action="search.html" method="get">
+             <div class="search">
+    <img src="mainlogo.png" alt="Logo" class="searchLogo">
+    <input type="text" class="searchInput">
+<button class="searchButton">
+    <i class="fas fa-search"></i>
+</button>
+</div>
+
+        </div>
+    </header>
+    <main>
+<p>
+        <div class="container">
+            <a href="emergency.html">응급실</a>
+            <a href="pharmacy.html">약국</a>
+        </div>
+    </main>
+</body>
+</html>
