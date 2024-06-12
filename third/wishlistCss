@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+}
+
+.wishlistContainer {
+    display: flex;
+    height: 100vh;
+}
+
+#map {
+    width: 70%;
+    height: 100%;
+}
+
+.list {
+    width: 30%;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: #f8f8f8;
+    border-left: 2px solid #ddd;
+}
+
+.list .tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.list .tab {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #ddd;
+    border: none;
+    outline: none;
+}
+
+.list .tab.active {
+    background-color: black;
+    font-weight: bold;
+    color:white;
+}
+
+.list ul {
+    list-style-type: none;
+    padding: 0;
+    display: none;
+}
+
+
+
+
+
+
+
+
+
