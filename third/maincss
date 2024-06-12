@@ -1,0 +1,49 @@
+body {
+    max-width: 80%;
+    margin: auto;
+}
+
+table a {
+    color: rgb(138, 138, 141);
+    text-decoration: none; 
+    text-align: center;
+}
+
+main {
+    text-align: center;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    border: 2px solid #100; 
+    padding: 5px;
+}
+
+
+.searchInput {
+    flex-grow: 1;
+    border: 2px solid #dddbdb;
+    padding: 15px;
+    margin-left: auto;
+    margin-right: auto;
+   font-size: 15px;
+}
+
+.searchButton {
+    border: none;
+    cursor: pointer;
+    color: black;
+    background-color: white; 
+    font-size: 30px;
+}
+
+main a {
+    margin: 10px;
+    padding: 5px;
+    background: black;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+}
+
