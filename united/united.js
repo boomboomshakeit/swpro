@@ -202,6 +202,40 @@ app.post('/resetpw', (req, res) => {
     }
 });
 
+//응급시설 지도
+app.get('/emergency', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'first', 'emergency_map.html'));
+  });
+  
+  // 모든 응급시설 위치 정보 불러오기
+  app.get('/erdata', (req, res) => {
+    db.query('SELECT emergency_name, lat, lng FROM emergency', (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: 'Database query error' });
+      } else {
+        res.status(200).json(results);
+      }
+    });
+  });
+
+//약국 지도
+app.get('/pharmacy', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'first', 'pharmacy_map.html'));
+  });
+  
+// 모든 약국 위치 정보 불러오기
+app.get('/phdata', (req, res) => {
+    db.query('SELECT pharmacy_name, lat, lng FROM pharmacy', (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: 'Database query error' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});  
+
 // 로그아웃 라우트
 app.get('/logout', (req, res) => {
     req.session.destroy(); // 세션 삭제
