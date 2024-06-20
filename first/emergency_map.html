@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>응급시설 지도</title>
+</head>
+<body>
+	<div id="map" style="width: 500px; height: 400px;"></div> 
+	
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=034c24fb1231811972e03e9d65a7cbdc"></script>
+	<script type="text/javascript">
+	
+	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var options = { //지도를 생성할 때 필요한 기본 옵션
+		center: new kakao.maps.LatLng(35.11045733,129.109192), // 부산성모병원을 중심으로 초기화
+            level: 5  // 지도의 확대 레벨
+        };
+		
+	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+	
+    // 서버에서 데이터 요청
+	fetch('http://localhost:3000/erdata')
+	.then(response => response.json())
+	.then(data => {
+	  // 받아온 데이터를 positions에 할당
+	  var positions = data;
+
+	  // 마커 생성
+	  positions.forEach(pos => {
+		var markerPosition = new kakao.maps.LatLng(pos.lat, pos.lng);
+		var marker = new kakao.maps.Marker({
+		  map: map,
+		  position: markerPosition,
+		  title: pos.emergency_name
+		});
+	  });
+	})
+	.catch(error => console.error('Error fetching data:', error));
+	
+	</script>
+</body>
+</html>
