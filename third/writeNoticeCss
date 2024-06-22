@@ -1,0 +1,25 @@
+form {
+    padding: 30px;
+    border: 1px solid #ddd;
+    margin: 15px;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #a3a2a2e6;
+}
+
+input[type="submit"] {
+    background: rgb(144, 142, 142);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    /*등록하기 버튼 중앙으로 보내기*/
+}
+
+input[type="submit"]:hover {
+    background: black;
+}

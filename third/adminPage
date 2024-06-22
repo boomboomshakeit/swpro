@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+<link rel="stylesheet" href="adminPageCss.css">
+</head>
+
+<body>
+<div class="administratorSidebar">
+    <div class="header"></div>
+    <h2>관리자 메뉴</h2>
+    <a href="pharmacy.html" onclick="showContent('pharmacy')">약국 관리</a>
+    <a href="emergency.html" onclick="showContent('emergency')">응급실 관리</a>
+    <a href="memberAdminister.html" onclick="showContent('member')">회원 관리</a>
+    <a href="wishlistadminister.html" onclick="showContent('wishlist')">찜리스트 관리</a>
+    <a href="customerBoard.html" onclick="showContent('customerBoard')">고객 게시판 관리</a>
+    <a href="notice.html" onclick="showContent('notice')">공지사항 작성</a>
+</div>
+</div>
+
+<div class="administratorMain">
+    <h1>관리자페이지</h1>
+    <button class="logout-btn">로그아웃</button>
+    </div>
+
+<div id="welcome">
+    <h2>관리자님, 반갑습니다!</h2>
+</div>
+
+<div id="pharmacy" class="content">
+    <h2>약국 관리</h2>
+    
+</div>
+
+<div id="emergency" class="content">
+    <h2>응급실 관리</h2>
+    
+</div>
+
+<div id="member" class="content">
+    <h2>회원 관리</h2>
+    
+</div>
+
+<div id="wishlist" class="content">
+    <h2>찜리스트 관리</h2>
+    
+</div>
+
+<div id="customerBoard" class="content">
+    <h2>고객 게시판 관리</h2>
+</div>
+
+<div id="notice" class="content">
+    <h2>공지사항 작성</h2>
+    
+
+</div>
+
+</div>
+
+
+</body>
+</html>

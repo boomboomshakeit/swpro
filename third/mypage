@@ -1,0 +1,86 @@
+<!--찜리스트, 고객게시판 수정-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="mypage.css">
+</head>
+
+<body>
+    <div class="mypage-container">
+        <main>
+            <div class="page-title">
+                <div class="change">
+                    <a href="change_id.html">아이디 바꾸기</a>
+                    <a href="change_password.html">비밀번호 바꾸기</a>
+                </div>
+
+                <div class="userInfo-box">
+                    <h3>[[${session.LoginIn.userName}]]님</h3>
+                    
+                    <div class="info">
+                        <ul class="mypage-tab">
+                                <span>아이디 :</span>
+                                [[${session.LoginIn.userId}]]
+                                
+                                <p>
+                            
+                                <span>이메일 :</span>
+                                [[${session.LoginIn.userEmail}]]<p></p>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="box">
+                    <div class="listbox" id="emergencyWishlist">
+                        <a href="wishlist.html" style="text-decoration: none"><h2>응급실 찜 리스트</h2></a>
+                            <ul>
+                                <li>응급실</li>
+                                <li>응급실</li>
+                                <li>응급실</li>
+                            </ul>
+                    </div>
+
+                <div class="listbox" id="pharmacyWishlist">
+                    <a href="wishlist.html" style="text-decoration: none"><h2>약국 찜 리스트</h2></a>
+                        <ul>
+                            <li>약국</li>
+                            <li>약국</li>
+                        </ul>
+                </div>
+
+                    <div class="listbox" id="boardList">
+                        
+                        <h2>내가 쓴 글</h2>
+                        <div id="boardWritingList">
+                            <ul>
+                                <li>글 리스트</li>
+                            </ul>
+                        
+                            <div class="boardBox">
+                            </div>
+                        <h2>내가 쓴 댓글</h2>
+                        <div id="boardCommentList">
+                            <ul>
+                                <li>댓글 리스트</li>
+                            </ul>
+                        </div>
+                    
+                    </div>
+                </div>
+
+                   
+
+            </div>
+        </main>
+
+    <footer>
+        <a href="withdrawal.html" class="button">회원탈퇴</a>
+        <button onclick="logout()">로그아웃</button>
+    </footer>
+
+        
+</body>
+</html>
