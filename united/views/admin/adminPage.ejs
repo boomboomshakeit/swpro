@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .administratorSidebar {
+            width: auto;
+            height: 100vh;
+            position: fixed;
+            background-color: #F5F5F5;
+            color: black;
+        }
+
+        .administratorSidebar h2 {
+            text-align: center;
+        }
+
+        .administratorSidebar a {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+            display: block;
+        }
+
+        .administratorSidebar a:hover {
+            background-color: #bab9b9;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: right;
+        }
+
+        .administratorMain {
+            margin-left: 200px;
+            padding: 10px;
+            font-size: 15px;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #717172;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: black;
+        }
+
+        .content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="administratorSidebar">
+    <div class="header"></div>
+    <h2>관리자 메뉴</h2>
+    <a href="memberAdminister" onclick="showContent('member')">회원 관리</a>
+    <a href="board" onclick="showContent('board')">고객 게시판 관리</a>
+    <a href="notice" onclick="showContent('notice')">공지사항 작성</a>
+</div>
+
+<div class="administratorMain">
+    <h1>관리자페이지</h1>
+    <button class="logout-btn">로그아웃</button>
+</div>
+
+<div id="member" class="content">
+    <h2>회원 관리</h2>
+    <!-- 이 부분에 데이터를 출력하거나, memberAdminister.ejs로 이동하면서 데이터를 전달 -->
+    <script>
+        function showContent(contentId) {
+            // 예시 데이터 (실제 데이터베이스에서 가져오는 방법에 따라 달라질 수 있음)
+            const userData = {
+                user_name: "사용자 이름",
+                email: "user@example.com"
+            };
+
+            // 예시: URL에 파라미터를 추가하는 방식으로 데이터 전달
+            const queryString = `?user_name=${encodeURIComponent(userData.user_name)}&email=${encodeURIComponent(userData.email)}`;
+            window.location.href = `memberAdminister.ejs${queryString}`;
+        }
+    </script>
+</div>
+
+<div id="customerBoard" class="content">
+    <h2>고객 게시판 관리</h2>
+</div>
+
+<div id="notice" class="content">
+    <h2>공지사항 작성</h2>
+</div>
+
+</body>
+</html>

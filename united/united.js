@@ -41,7 +41,50 @@ app.get('/', (req, res) => {
 
 // 관리자 페이지
 app.get('/adminPage', (req, res) => {
-    res.render('adminPage');
+    res.render('admin/adminPage');
+});
+
+// 회원 관리 페이지 라우팅
+app.get('/memberAdminister', function(req, res) {
+    // MySQL 쿼리를 사용하여 사용자 데이터를 가져옴
+    db.query('SELECT * FROM usertable', (err, rows) => {
+        if (err) {
+            console.error('MySQL query error:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        // memberAdminister.ejs를 렌더링하여 클라이언트에게 전송
+        res.render('admin/memberAdminister', { users: rows }); // rows는 쿼리 결과를 의미
+    });
+});
+
+// 회원 삭제 
+app.delete('/deleteUser/:username', function(req, res) {
+    const username = req.params.username; // req.params.email -> req.params.username으로 수정
+
+    // MySQL 쿼리를 사용하여 사용자 데이터를 삭제
+    db.query('DELETE FROM usertable WHERE user_name = ?', [username], (err, result) => {
+        if (err) {
+            console.error('MySQL 쿼리 오류:', err);
+            res.status(500).send('내부 서버 오류');
+            return;
+        }
+
+        // 삭제 성공 시 클라이언트에게 응답
+        console.log('사용자 삭제:', username);
+        res.status(200).send('사용자가 삭제되었습니다.');
+    });
+});
+
+// DELETE 요청을 처리할 라우트 설정
+app.delete('/deleteUser/:username', (req, res) => {
+    const username = req.params.username;
+
+    // 사용자 삭제 로직 (예: 배열에서 해당 사용자 제거)
+    users = users.filter(user => user.user_name !== username);
+
+    res.sendStatus(200); // 성공 상태 코드 응답 (옵션)
 });
 
 // 회원가입 페이지에 대한 라우팅
