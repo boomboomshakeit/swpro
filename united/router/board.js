@@ -53,7 +53,6 @@ router.post('/board/write', upload.single('file'), function (req, res) {
                   document.location.href="/login";</script>`);
         return;
     }
-
     var writer = req.session.user.nickname; // 세션에서 nickname 가져오기
     var title = req.body.title;
     var content = req.body.content;

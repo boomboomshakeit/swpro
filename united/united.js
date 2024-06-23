@@ -39,6 +39,10 @@ app.get('/', (req, res) => {
     res.render('main'); // main.ejs 파일을 렌더링
 });
 
+// 관리자 페이지
+app.get('/adminPage', (req, res) => {
+    res.render('adminPage');
+});
 
 // 회원가입 페이지에 대한 라우팅
 app.get('/signup', (req, res) => {
@@ -96,7 +100,6 @@ app.get('/login', (req, res) => {
     res.render('login/login');
 });
 
-// 로그인 프로세스
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -116,13 +119,22 @@ app.post('/login', (req, res) => {
                     // 로그인 성공 후 세션에 사용자 정보 저장
                     req.session.user = { username: user.user_name, email: user.email, nickname: user.nickname };
                     req.session.save(() => {
-                        // 로그인 성공 팝업창 띄우기
-                        res.send(`
-                            <script>
-                                alert('로그인 되었습니다.');
-                                window.location.href = '/'; // 메인 페이지로 리다이렉트
-                            </script>
-                        `);
+                        if (user.user_name === 'admin') {
+                            res.send(`
+                                <script>
+                                    alert('관리자로 로그인 되었습니다.');
+                                    window.location.href = '/adminPage'; // 관리자 페이지로 리다이렉트
+                                </script>
+                            `);
+                        } else {
+                            // 로그인 성공 팝업창 띄우기
+                            res.send(`
+                                <script>
+                                    alert('로그인 되었습니다.');
+                                    window.location.href = '/'; // 메인 페이지로 리다이렉트
+                                </script>
+                            `);
+                        }
                     });
                 } else {
                     console.log('Invalid email or password');
@@ -478,14 +490,14 @@ app.get("/emergency_list", (req, res) => {
     });
 });
 
-//http://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytBassInfoInqire?serviceKey=bRGHp4LED9LmCtpRIaNbJgEoBqxhSFPQ6L80seoB1xuifKVf5Prkaqq%2FaT6V9EnAwgFs6C%2B38eIGzeSBZ68i3g%3D%3D&HPID=A0000028&pageNo=1&numOfRows=10
-
 // router 설정
 const indexRouter = require('./router');
 const boardRouter = require('./router/board');
+const noticeRouter = require('./router/notice');
 
 app.use('/', indexRouter);
 app.use('/', boardRouter);
+app.use('/', noticeRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
