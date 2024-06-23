@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+}
+
+.administratorSidebar {
+    width: auto; 
+    height: 100vh; 
+    position: fixed; 
+    background-color: #F5F5F5; 
+    color: black;
+}
+
+.administratorSidebar h2 {
+   text-align: center;
+}
+
+.administratorSidebar a {
+    padding: 10px 20px; 
+    text-decoration: none; 
+    font-size: 20px; 
+    color: black;
+    display: block;   
+ }
+
+.administratorSidebar a:hover {
+    background-color: #bab9b9;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: right;
+}
+
+.administratorMain {
+    margin-left: 200px;
+    padding: 10px;
+    font-size: 15px; 
+}
+
+.logout-btn {
+    padding: 10px 20px;
+    background-color: #717172;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: black;
+}
+
+.content {
+    display: none;
+}
+
+
+

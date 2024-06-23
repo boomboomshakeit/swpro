@@ -1,0 +1,22 @@
+head {
+    color: rgb(221, 221, 221);
+}
+
+body {
+    font-family: sans-serif;
+    color: rgb(221, 221, 221);
+    max-width: 80%;
+    margin: auto;
+}
+
+.site-header {
+    text-align: left; 
+    padding: 15px 0; 
+}
+
+
+.logo {
+    height: 50px; 
+    width: 50px; 
+    margin-left: 20px; 
+}
