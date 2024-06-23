@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>응급실 지도</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=3tj88ac3v9&amp;submodules=geocoder"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #map-container {
+            display: flex;
+            flex-direction: column;
+            width: 60%;
+            height: 100%;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+        #info-container {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .info-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .info-item h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .info-item p {
+            margin: 5px 0;
+        }
+        #search-bar {
+            margin-bottom: 20px;
+        }
+        #search-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #search-button {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="map-container">
+        <div style="width: 95%;margin-top: 20px; margin-bottom: 10px; margin-left: 20px; font-weight: bold;">
+            <h2>응급실 지도</h2>
+        </div>
+        <div id="map" style="width: 95%"></div>
+    </div>
+    <div id="info-container">
+        <div id="search-bar">
+            <input type="text" id="search-input" placeholder="검색할 응급실명을 입력하세요">
+            <button id="search-button">검색</button>
+        </div>
+        <h2>응급실 목록</h2>
+        <div id="list-container"></div>
+    </div>
+    <script>
+        $(document).ready(async function(){
+            let XY = await getLocation();
+
+            await naver.maps.Service.reverseGeocode({
+                location: new naver.maps.LatLng(XY.lat, XY.lng)
+            }, function(status, response) {
+                let result = response.result;
+                let items = result.items;
+                let sido_arr = items[0].addrdetail.sido.split(" ");
+                let gubun_arr = items[0].addrdetail.sigugun.split(" ");
+
+                let sido = "";
+                let gubun = "";
+                if (sido_arr.length == 1) {
+                    sido = sido_arr[0];
+                    gugun = gubun_arr[0];
+                }
+                else if (sido_arr.length > 1) {
+                    sido = sido_arr[0];
+                    gugun = sido_arr[1];
+                }
+
+                $.ajax({
+                    url: "/emergency_list",
+                    type: "GET",
+                    cache: false,
+                    dataType: "json",
+                    data: {"Q0": sido, "Q1": gugun, "QN": "", "QRD": "", "pageNo": "1", "numOfRows": "1000"},
+                    success: function(data) {
+                        var mapDiv = document.getElementById('map');
+
+                        var mapOptions = {
+                            center: new naver.maps.LatLng(XY.lat, XY.lng),
+                            zoom: 14
+                        }
+                        var map = new naver.maps.Map(mapDiv, mapOptions);
+
+                        let emergencyItems = data.items.item;
+                        displayEmergencyList(emergencyItems);
+
+                        emergencyItems.forEach(function(it, index) {
+                            let dutyName = it.dutyName;
+                            let dutyAddr = it.dutyAddr;
+                            let dutyTel1 = it.dutyTel1 ? it.dutyTel1 : "없음";
+                            let dutyTel3 = it.dutyTel3 ? it.dutyTel3 : "없음";
+                            let dutyHayn = it.dutyHayn;
+                            let dutyEryn = it.dutyEryn;
+
+                            let emergency_location = new naver.maps.LatLng(it.wgs84Lat, it.wgs84Lon);
+
+                            let dutyHaynText = (dutyHayn === '1') ? "가능" : "불가";
+                            let dutyErynText = (dutyEryn === '1') ? "가능" : "불가";
+
+                            let marker = new naver.maps.Marker({
+                                map: map,
+                                position: emergency_location
+                            });
+
+                            var contentString = [
+                                '<div class="iw_inner">',
+                                '   <h3>' + dutyName + '</h3>',
+                                '   <p>' + dutyAddr + '<br />',
+                                '   <p>입원실: ' + dutyHaynText + '<br />',
+                                '   <p>응급실: ' + dutyErynText + '<br />',
+                                '   <p>대표전화: ' + dutyTel1 + '<br />',
+                                '       응급실 전화: ' + dutyTel3,
+                                '   </p>',
+                                '</div>'
+                                ].join('');
+
+                            var infowindow = new naver.maps.InfoWindow({
+                                content: contentString,
+                                maxWidth: 440,
+                                backgroundColor: "#eee",
+                                borderColor: "#2db400",
+                                borderWidth: 5,
+                                anchorSize: new naver.maps.Size(30, 30),
+                                anchorSkew: true,
+                                anchorColor: "#eee",
+                                pixelOffset: new naver.maps.Point(20, -20)
+                            });
+
+                            naver.maps.Event.addListener(marker, "click", function(e) {
+                                if (infowindow.getMap()) {
+                                    infowindow.close();
+                                } else {
+                                    infowindow.open(map, marker);
+                                }
+                            });
+                        });
+
+                        $('#search-button').on('click', function() {
+                            let searchTerm = $('#search-input').val().toLowerCase();
+                            let filteredItems = emergencyItems.filter(it => it.dutyName.toLowerCase().includes(searchTerm));
+                            displayEmergencyList(filteredItems);
+                        });
+                    },
+                    error: function(request, status, error) {
+                        console.log("Error: " + error);
+                    }
+                });
+            });
+
+        });
+
+        function displayEmergencyList(items) {
+            let listContainer = document.getElementById("list-container");
+            listContainer.innerHTML = ""; // Clear existing list
+            items.forEach(function(it) {
+                let dutyName = it.dutyName;
+                let dutyAddr = it.dutyAddr;
+                let dutyTel1 = it.dutyTel1 ? it.dutyTel1 : "없음";
+                let dutyTel3 = it.dutyTel3 ? it.dutyTel3 : "없음";
+                let dutyHayn = it.dutyHayn;
+                let dutyEryn = it.dutyEryn;
+                
+                let dutyHaynText = (dutyHayn === '1') ? "가능" : "불가";
+                let dutyErynText = (dutyEryn === '1') ? "가능" : "불가";
+
+                var infoItem = document.createElement("div");
+                infoItem.className = "info-item";
+                infoItem.innerHTML = 
+                    '<h3>' + dutyName + '</h3>' +
+                    '<p>주소: ' + dutyAddr + '</p>' +
+                    '<p>대표전화: ' + dutyTel1 + '</p>' +
+                    '<p>응급실 전화: ' + dutyTel3 + '</p>' +
+                    '<p>입원실 가용여부: ' + dutyHaynText + '</p>' +
+                    '<p>응급실 운영여부: ' + dutyErynText + '</p>';
+                listContainer.appendChild(infoItem);
+            });
+        }
+
+        async function getLocation() {
+            let XY = new Object();
+            if(navigator.geolocation) {
+
+                let promise = new Promise((resolve, rejected) => {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        resolve(position);
+                    });
+                });
+
+                let position = await promise;
+                XY.lat = position.coords.latitude;
+                XY.lng = position.coords.longitude;
+            }
+            return XY;
+        }
+    </script>
+</body>
+</html>

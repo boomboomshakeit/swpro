@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+    margin: 0;
+    }
+
+    .administratorSidebar {
+        width: auto; 
+        height: 100vh; 
+        position: fixed; 
+        background-color: #F5F5F5; 
+        color: black;
+    }
+
+    .administratorSidebar h2 {
+    text-align: center;
+    }
+
+    .administratorSidebar a {
+        padding: 10px 20px; 
+        text-decoration: none; 
+        font-size: 20px; 
+        color: black;
+        display: block;   
+    }
+
+    .administratorSidebar a:hover {
+        background-color: #bab9b9;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: right;
+    }
+
+    .administratorMain {
+        margin-left: 200px;
+        padding: 10px;
+        font-size: 15px; 
+    }
+
+    .logout-btn {
+        padding: 10px 20px;
+        background-color: #717172;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .logout-btn:hover {
+        background-color: black;
+    }
+
+    .content {
+        display: none;
+    }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+<link rel="stylesheet" href="adminPageCss.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="administratorSidebar">
+    <div class="header"></div>
+    <h2>관리자 메뉴</h2>
+    <a href="memberAdminister" onclick="showContent('member')">회원 관리</a>
+    <a href="adminBoard" onclick="showContent('adminBoard')">고객 게시판 관리</a>
+    <a href="notice" onclick="showContent('notice')">공지사항 작성</a>
+</div>
+</div>
+
+<div class="administratorMain">
+    <h1>게시판</h1>
+    <div class="container">
+        <h3>게시판리스트</h3>
+        <table class="table table-border text-center">
+            <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">글쓴이</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!rows || rows.length === 0) { %>
+                    <tr>
+                        <td colspan="4">게시글이 없습니다.</td>
+                    </tr>
+                <% } else { %>
+                    <% for (var i = 0; i < rows.length; i++) {
+                        var result = rows[i];
+                    %>
+                        <tr>
+                            <% if (result.del_yn == "Y") { %>
+                                <td colspan="4">삭제된 게시글입니다.</td>
+                            <% } else { %>
+                                <td><%= i + 1 %></td>
+                                <td><%= result.writer %></td>
+                                <td class="w-50"><a class="text-decoration-none" href="/board/view/<%= result.idx %>"><%= result.title %></a></td>
+                                <td><%= result.date %></td>
+                            <% } %>
+                        </tr>
+                    <% } %>
+                <% } %>
+            </tbody>
+        </table>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="/board/write" class="btn btn-primary">글쓰기</a>
+        </div>
+    </div>
+    </div>
+
+<div id="pharmacy" class="content">
+    <h2>약국 관리</h2>
+    
+</div>
+
+<div id="emergency" class="content">
+    <h2>응급실 관리</h2>
+    
+</div>
+
+<div id="member" class="content">
+    <h2>회원 관리</h2>
+    
+</div>
+
+<div id="wishlist" class="content">
+    <h2>찜리스트 관리</h2>
+    
+</div>
+
+<div id="customerBoard" class="content">
+    <h2>고객 게시판 관리</h2>
+</div>
+
+<div id="notice" class="content">
+    <h2>공지사항 작성</h2>
+    
+
+</div>
+
+</div>
+
+
+</body>
+</html>
