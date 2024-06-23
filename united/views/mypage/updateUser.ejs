@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+    <link rel="stylesheet" href="mypageCss.css">
+</head>
+<body>
+    <h2>회원 정보 수정</h2>
+    <form action="/updateUser" method="POST">
+        <div class="form-group">
+            <label for="nickname">닉네임:</label>
+            <input type="text" id="nickname" name="nickname" value="<%= user.nickname %>" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">전화번호:</label>
+            <input type="text" id="phone" name="phone" value="<%= user.phone %>" placeholder="전화번호를 입력하세요." required>
+        </div>
+        <button type="submit">수정</button>
+    </form>
+</body>
+</html>
