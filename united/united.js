@@ -35,8 +35,8 @@ app.use(session({
 
 // 메인 화면
 app.get('/', (req, res) => {
-    // 세션 정보를 템플릿으로 전달
-    res.render('main', { session: req.session });
+    const user = req.session.user || null;
+    res.render('main', { user: user });
 });
 
 // 관리자 페이지

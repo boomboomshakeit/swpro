@@ -108,7 +108,7 @@
             <table width="100%">
               <tr>
                 <td align="right">
-                    <% if (!user.email) { %>
+                    <% if (!user || !user.email) { %>
                         <!-- 로그인 상태가 아닐 때 -->
                         <a href="/signup">회원가입</a> | 
                         <a href="/login">로그인</a> |
