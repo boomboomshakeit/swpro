@@ -1,16 +1,93 @@
 <!DOCTYPE html>
 <html>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .re-header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 5px;
+        }
+        .input-type {
+            margin-bottom: 15px;
+        }
+
+        .input-type input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #c3c3c3;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .re-info {
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        .re-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #b4b2b2cb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .re-btn:hover {
+            background-color: black;
+        }
+
+        .links {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .links a {
+            margin: 0 3px;
+            color: #616060;
+            text-decoration: none;
+        }
+    </style>
 <head>
     <meta charset="UTF-8">
     <title>비밀번호 재설정</title>
 </head>
 <body>
-    <h2>비밀번호 재설정</h2>
+
+    
+
     <form action="/resetpw" method="post">
-        <p><input type="password" name="new_pwd" placeholder="새 비밀번호"></p>
-        <p><input type="password" name="new_pwd2" placeholder="비밀번호 재확인"></p>
-        <p><input type="submit" value="재설정"></p>
+        <div  class="re-info">
+            <div class="re-header">
+    <h2>비밀번호 재설정</h2>
+</div>
+        <p><div class="input-type"><input type="password" name="new_pwd" placeholder="새 비밀번호"></p>
+        <p><input type="password" name="new_pwd2" placeholder="비밀번호 재확인"></p></div>
+        <p> <button type="submit" class="re-btn">재설정</button></p>
+        <div class="links">
+            <a href="/login">로그인화면으로 돌아가기</a></p>
+        </div>
+        </div>
+    
     </form>
-    <p><a href="/login">로그인화면으로 돌아가기</a></p>
+    <p>
+        
 </body>
 </html>
