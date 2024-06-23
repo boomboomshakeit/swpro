@@ -1,0 +1,50 @@
+<%- include("../include/header") -%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<div class="container">
+	<h3 class="mb-5">게시판글보기</h3>
+
+	<div class="container">
+		<div class="d-flex justify-content-md-between mb-3">
+			<p>작성일 : <%=result.date%></p>
+			<p>게시글번호 : <%=result.idx%></p>
+			<div class="btn-group">
+				<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/notice/modify/<%=result.idx%>">수정</a></li>
+					<li><a class="dropdown-item" href="/notice/delete/<%=result.idx%>">삭제</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="mb-3 row">
+			<label for="staticEmail" class="col-sm-2 col-form-label">글쓴이 : </label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result.writer%>">
+			</div>
+		</div>
+		<div class="mb-3 row">
+			<label for="staticEmail" class="col-sm-2 col-form-label">제목 : </label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result.title%>">
+			</div>
+		</div>
+		<div class="mb-3 row">
+			<label for="staticEmail" class="col-sm-2 col-form-label">내용 : </label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result.content%>">
+			</div>
+		</div>
+		<% if(result.file_o_name){ %>
+		<div class="mb-3 row">
+			<label for="staticEmail" class="col-sm-2 col-form-label">첨부파일 : </label>
+			<div class="col-sm-10">
+				<a class="form-control-plaintext text-decoration-none" href="<%=result.file_path%><%=result.file_c_name%>"><%=result.file_o_name%></a>
+			</div>
+		</div>
+		<% } %>
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			<a href="/notice" class="btn btn-primary">돌아가기</a>
+		</div>
+	</div>
+
+	<%- include("../include/footer") -%>
