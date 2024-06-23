@@ -1,97 +1,149 @@
+
 <!DOCTYPE html>
 <html>
-    <style>
-        body {
-    max-width: 80%;
-    margin: auto;
-}
-
-table a {
-    color: rgb(138, 138, 141);
-    text-decoration: none; 
-    text-align: center;
-}
-
-main {
-    text-align: center;
-}
-
-.search {
-    display: flex;
-    align-items: center;
-    border: 2px solid #100; 
-    padding: 5px;
-}
-
-
-.searchInput {
-    flex-grow: 1;
-    border: 2px solid #dddbdb;
-    padding: 15px;
-    margin-left: auto;
-    margin-right: auto;
-   font-size: 15px;
-}
-
-.searchButton {
-    border: none;
-    cursor: pointer;
-    color: black;
-    background-color: white; 
-    font-size: 30px;
-}
-
-main a {
-    margin: 10px;
-    padding: 5px;
-    background: black;
-    color: white;
-    text-decoration: none;
-    font-size: 30px;
-}
-    </style>
 <head>
     <meta charset="UTF-8">
     <title>응급실, 약국 찾아주기 사이트</title>
-    <link rel="stylesheet" href="styleMain.css">
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-<table>
-  <tr>
-    <td align="right">
-<div>
-      <% if (!user.email) { %>
-            <a href="signup">회원가입</a> | 
-            <a href="login">로그인</a>
-          <% } else { %>
-              <a href="mypage">마이페이지</a> |
-              <a href="board">고객 게시판</a> |
-              <a href="logout">로그아웃</a>
-          <% } %>
-</div>
-    </td>
-  </tr>
-</table>
 
-<footer>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-<form action="search" method="get">
-             <div class="search">
+body {
+    background-color: #f4f4f4;
+}
+
+
+.container {
+    width: 80%;
+    margin: 0 auto;
     
-    <input type="text" class="searchInput">
-<button class="searchButton">
-    <i class="fas fa-search"></i>
-</button>
-</div>
+}
 
-    <main>
-<p>
+.container a {
+    text-decoration: none; 
+}
+
+
+header {
+    background-color: #fff;
+    padding: 20px 0;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+
+.nav {
+    display: flex;
+    gap: 15px;
+}
+
+.nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    background-color: #ADD8E6; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav a:nth-child(2) {
+    background-color: #98FB98; 
+}
+
+.nav a:nth-child(3) {
+    background-color: #FFD700; 
+}
+
+.nav a:nth-child(4) {
+    background-color: #DDA0DD; 
+}
+
+.nav a:hover {
+    background-color: #333;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.banners {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.banner {
+    width: 48%;
+    padding: 100px 0;
+    text-align: center;
+    font-size: 28px; 
+    font-weight: bold;
+    color: #fff;
+    border-radius: 10px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.emergency {
+    background-color: #6AB04A; 
+}
+
+.pharmacy {
+    background-color: #45AAF2; 
+}
+
+.emergency:hover{
+    background-color:#2ECC71;
+}
+.pharmacy:hover {
+    background-color:#2E86C1; 
+}
+
+</style>
+
+<body>
+    <header>
         <div class="container">
-            <a href="emergency">응급실</a>
-            <a href="pharmacy">약국</a>
+            <h1>사이트이름</h1>
+            <div class="nav">
+            <table width="100%">
+              <tr>
+                <td align="right">
+                   <!-- 사용자가 로그인하지 않은 경우에만 회원가입, 로그인 링크를 표시 -->
+                    <a href="signup">회원가입</a> | 
+                    <a href="login">로그인</a> |
+                  
+                  <a href="mypage">마이페이지</a> |
+                  <a href="board">고객 게시판</a>
+                </td>
+              </tr>
+            </table>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container banners">
+            <a href="emergency" class="banner emergency">응급실</a>
+            <a href="pharmacy" class="banner pharmacy">약국</a>
         </div>
     </main>
-    </form>
 </body>
 </html>
