@@ -1,0 +1,95 @@
+<%- include("../include/header") -%>
+
+<style>
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	.text-center {
+		text-align: center;
+	}
+
+	.mb-5 {
+		margin-bottom: 3rem !important;
+	}
+
+	.w-50 {
+		width: 50% !important;
+	}
+
+	.input-group {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.input-group input {
+		margin-bottom: 10px;
+		padding: 10px;
+		font-size: 1rem;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		width: 100%;
+	}
+
+	.input-group .form-control {
+		width: calc(100% - 120px); /* Adjust to leave space for the button */
+		margin-right: 10px;
+	}
+
+	.btn {
+		padding: 10px 20px;
+		font-size: 1rem;
+		color: #fff;
+		background-color: #007bff;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+	}
+
+	.btn:hover {
+		background-color: #0056b3;
+	}
+
+	.d-grid {
+		display: grid;
+	}
+
+	.gap-2 {
+		gap: 0.5rem;
+	}
+
+	.d-md-flex {
+		display: flex;
+	}
+
+	.justify-content-md-end {
+		justify-content: flex-end;
+	}
+</style>
+
+<div class="container">
+	<h3 class="mb-5">게시글<%=title%></h3>
+
+	<div class="container">
+		<div class="text-center mb-5">
+			<p>게시글번호 : <%=idx%></p>
+			<p><%=title%>하시려면 게시글 비밀번호를 입력해주세요.</p>
+		</div>
+		<div class="container w-50">
+			<form action="/board/<%=type%>/<%=idx%>" method="post">
+				<div class="input-group mb-5">
+					<input type="password" class="form-control" placeholder="게시글 비밀번호" name="password">
+					<input type="submit" class="btn btn-primary" value="<%=title%>">
+				</div>
+			</form>
+		</div>
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			<a href="/board/view/<%=idx%>" class="btn btn-primary">돌아가기</a>
+		</div>
+	</div>
+
+	<%- include("../include/footer") -%>
