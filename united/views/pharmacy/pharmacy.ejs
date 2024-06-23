@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>약국 지도</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=thaper7mym&amp;submodules=geocoder"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #map-container {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            height: 100%;
+        }
+        #map {
+            width: 100%;
+            height: 90%;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+        #list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .info-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .info-item h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .info-item p {
+            margin: 5px 0;
+        }
+        #search-bar {
+            margin-bottom: 20px;
+        }
+        #search-input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #search-button {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map-container">
+        <div style="margin-top: 20px; margin-bottom: 10px; margin-left: 20px; font-weight: bold;">
+            <h2>약국 지도</h2>
+        </div>
+        <div id="map"></div>
+    </div>
+    <div id="list-container">
+        <div id="search-bar">
+            <input type="text" id="search-input" placeholder="약국 이름으로 검색">
+            <button id="search-button">검색</button>
+        </div>
+        <h2>약국 목록</h2>
+        <div id="pharmacy-list"></div>
+    </div>
+
+    <script>
+        $(document).ready(async function(){
+            let XY = await getLocation();
+
+            await naver.maps.Service.reverseGeocode({
+                location: new naver.maps.LatLng(XY.lat, XY.lng)
+            }, function(status, response) {
+                let result = response.result;
+                let items = result.items;
+                let sido_arr = items[0].addrdetail.sido.split(" ");
+                let gubun_arr = items[0].addrdetail.sigugun.split(" ");
+
+                let sido = "";
+                let gubun = "";
+                if (sido_arr.length == 1) {
+                    sido = sido_arr[0];
+                    gugun = gubun_arr[0];
+                }
+                else if (sido_arr.length > 1) {
+                    sido = sido_arr[0];
+                    gugun = sido_arr[1];
+                }
+
+                $.ajax({
+                    url: "/pharmacy_list",
+                    type: "GET",
+                    cache: false,
+                    dataType: "json",
+                    data: {"Q0": sido, "Q1": gugun, "QT": "", "QN": "", "QRD": "", "pageNo": "1", "numOfRows": "1000"},
+                    success: function(data) {
+                        var mapDiv = document.getElementById('map');
+
+                        var mapOptions = {
+                            center: new naver.maps.LatLng(XY.lat, XY.lng),
+                            zoom: 14
+                        }
+                        var map = new naver.maps.Map(mapDiv, mapOptions);
+
+                        let pharmacyItems = data.items.item;
+                        displayPharmacyList(pharmacyItems);
+
+                        pharmacyItems.forEach(function(it, index) {
+                            let dutyName = it.dutyName; //약국명
+                            let dutyAddr = it.dutyAddr; //주소
+                            let dutyTel1 = it.dutyTel1; //전화번호
+
+                            let dutyTime = "";
+                            if (it.dutyTime1s && it.dutyTime1c) {
+                                dutyTime += "월요일: " +it.dutyTime1s + " ~ " + it.dutyTime1c + "<br>";
+                            }
+                            if (it.dutyTime2s && it.dutyTime2c) {
+                                dutyTime += "화요일: " +it.dutyTime2s + " ~ " + it.dutyTime2c + "<br>";
+                            }
+                            if (it.dutyTime3s && it.dutyTime3c) {
+                                dutyTime += "수요일: " +it.dutyTime3s + " ~ " + it.dutyTime3c + "<br>";
+                            }
+                            if (it.dutyTime4s && it.dutyTime4c) {
+                                dutyTime += "목요일: " +it.dutyTime4s + " ~ " + it.dutyTime4c + "<br>";
+                            }
+                            if (it.dutyTime5s && it.dutyTime5c) {
+                                dutyTime += "금요일: " +it.dutyTime5s + " ~ " + it.dutyTime5c + "<br>";
+                            }
+                            if (it.dutyTime6s && it.dutyTime6c) {
+                                dutyTime += "토요일: " +it.dutyTime6s + " ~ " + it.dutyTime6c + "<br>";
+                            }
+                            if (it.dutyTime7s && it.dutyTime7c) {
+                                dutyTime += "일요일: " +it.dutyTime7s + " ~ " + it.dutyTime7c + "<br>";
+                            }
+                            if (it.dutyTime8s && it.dutyTime8c) {
+                                dutyTime += "공휴일: " +it.dutyTime8s + " ~ " + it.dutyTime8c + "<br>";
+                            }
+
+                            let pharmacy_location = new naver.maps.LatLng(it.wgs84Lat, it.wgs84Lon);
+
+                            let marker = new naver.maps.Marker({
+                                map: map,
+                                position: pharmacy_location
+                            });
+
+                            var contentString = [
+                                '<div class="iw_inner">',
+                                '   <h3>'+dutyName+'</h3>',
+                                '   <p>'+dutyAddr+'<br />',
+                                '       '+dutyTel1+'<br />',
+                                '       '+dutyTime,
+                                '   </p>',
+                                '</div>'
+                            ].join('');
+
+                            var infowindow = new naver.maps.InfoWindow({
+                                content: contentString,
+                                maxWidth: 440,
+                                backgroundColor: "#eee",
+                                borderColor: "#2db400",
+                                borderWidth: 5,
+                                anchorSize: new naver.maps.Size(30, 30),
+                                anchorSkew: true,
+                                anchorColor: "#eee",
+                                pixelOffset: new naver.maps.Point(20, -20)
+                            });
+
+                            naver.maps.Event.addListener(marker, "click", function(e) {
+                                if (infowindow.getMap()) {
+                                    infowindow.close();
+                                } else {
+                                    infowindow.open(map, marker);
+                                }
+                            });
+                        });
+
+                        $('#search-button').on('click', function() {
+                            let searchTerm = $('#search-input').val().toLowerCase();
+                            let filteredItems = pharmacyItems.filter(it => it.dutyName.toLowerCase().includes(searchTerm));
+                            displayPharmacyList(filteredItems);
+                        });
+                    },
+                    error: function(request, status, error) {
+                        console.log("Error: " + error);
+                    }
+                });
+            });
+
+        });
+
+        function displayPharmacyList(items) {
+            let listContainer = document.getElementById("pharmacy-list");
+            listContainer.innerHTML = ""; // Clear existing list
+            items.forEach(function(it) {
+                let dutyName = it.dutyName;
+                let dutyAddr = it.dutyAddr;
+                let dutyTel1 = it.dutyTel1 ? it.dutyTel1 : "없음";
+
+                let dutyTime = "";
+                if (it.dutyTime1s && it.dutyTime1c) {
+                    dutyTime += "월요일: " +it.dutyTime1s + " ~ " + it.dutyTime1c + "<br>";
+                }
+                if (it.dutyTime2s && it.dutyTime2c) {
+                    dutyTime += "화요일: " +it.dutyTime2s + " ~ " + it.dutyTime2c + "<br>";
+                }
+                if (it.dutyTime3s && it.dutyTime3c) {
+                    dutyTime += "수요일: " +it.dutyTime3s + " ~ " + it.dutyTime3c + "<br>";
+                }
+                if (it.dutyTime4s && it.dutyTime4c) {
+                    dutyTime += "목요일: " +it.dutyTime4s + " ~ " + it.dutyTime4c + "<br>";
+                }
+                if (it.dutyTime5s && it.dutyTime5c) {
+                    dutyTime += "금요일: " +it.dutyTime5s + " ~ " + it.dutyTime5c + "<br>";
+                }
+                if (it.dutyTime6s && it.dutyTime6c) {
+                    dutyTime += "토요일: " +it.dutyTime6s + " ~ " + it.dutyTime6c + "<br>";
+                }
+                if (it.dutyTime7s && it.dutyTime7c) {
+                    dutyTime += "일요일: " +it.dutyTime7s + " ~ " + it.dutyTime7c + "<br>";
+                }
+                if (it.dutyTime8s && it.dutyTime8c) {
+                    dutyTime += "공휴일: " +it.dutyTime8s + " ~ " + it.dutyTime8c + "<br>";
+                }
+
+                let itemHTML = [
+                    '<div class="info-item">',
+                    '   <h3>'+dutyName+'</h3>',
+                    '   <p>'+dutyAddr+'<br />',
+                    '       '+dutyTel1+'<br />',
+                    '       '+dutyTime,
+                    '   </p>',
+                    '</div>'
+                ].join('');
+
+                listContainer.innerHTML += itemHTML;
+            });
+        }
+
+        async function getLocation() {
+            let XY = {};
+            if (navigator.geolocation) {
+                let position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+                XY.lat = position.coords.latitude;
+                XY.lng = position.coords.longitude;
+            }
+            return XY;
+        }
+    </script>
+</body>
+</html>

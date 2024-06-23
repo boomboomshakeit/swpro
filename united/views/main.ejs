@@ -1,42 +1,97 @@
 <!DOCTYPE html>
 <html>
+    <style>
+        body {
+    max-width: 80%;
+    margin: auto;
+}
+
+table a {
+    color: rgb(138, 138, 141);
+    text-decoration: none; 
+    text-align: center;
+}
+
+main {
+    text-align: center;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    border: 2px solid #100; 
+    padding: 5px;
+}
+
+
+.searchInput {
+    flex-grow: 1;
+    border: 2px solid #dddbdb;
+    padding: 15px;
+    margin-left: auto;
+    margin-right: auto;
+   font-size: 15px;
+}
+
+.searchButton {
+    border: none;
+    cursor: pointer;
+    color: black;
+    background-color: white; 
+    font-size: 30px;
+}
+
+main a {
+    margin: 10px;
+    padding: 5px;
+    background: black;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+}
+    </style>
 <head>
     <meta charset="UTF-8">
     <title>응급실, 약국 찾아주기 사이트</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleMain.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>사이트이름</h1>
-            <table width="100%">
-              <tr>
-                <td align="right">
-                  <% if (!user.username) { %> <!-- 사용자가 로그인하지 않은 경우에만 회원가입, 로그인 링크를 표시 -->
-                    <a href="signup">회원가입</a> | 
-                    <a href="login">로그인</a> |
-                  <% } else { %> <!-- 사용자가 로그인한 경우 로그아웃 링크를 표시 -->
-                    <a href="logout">로그아웃</a> |
-                  <% } %>
-                  <a href="mypage">마이페이지</a> |
-                  <a href="board">고객 게시판</a> |
-                  <a href="wishlist">찜리스트</a>
-                </td>
-              </tr>
-            </table>
-            <form action="search" method="get">
-                <div class="search">
-                    <input type="text">
-                    <button type="submit">검색</button>
-                </div>
-            </form>
-        </div>
-    </header>
+<table>
+  <tr>
+    <td align="right">
+<div>
+      <% if (!user.email) { %>
+            <a href="signup">회원가입</a> | 
+            <a href="login">로그인</a>
+          <% } else { %>
+              <a href="mypage">마이페이지</a> |
+              <a href="board">고객 게시판</a> |
+              <a href="logout">로그아웃</a>
+          <% } %>
+</div>
+    </td>
+  </tr>
+</table>
+
+<footer>
+
+<form action="search" method="get">
+             <div class="search">
+    
+    <input type="text" class="searchInput">
+<button class="searchButton">
+    <i class="fas fa-search"></i>
+</button>
+</div>
+
     <main>
+<p>
         <div class="container">
             <a href="emergency">응급실</a>
             <a href="pharmacy">약국</a>
         </div>
     </main>
+    </form>
 </body>
 </html>
