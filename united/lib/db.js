@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
