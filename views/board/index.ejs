@@ -1,0 +1,126 @@
+<%- include("../include/header") -%>
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h3 {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        border: 1px solid #dee2e6;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .w-50 {
+        width: 50%;
+    }
+
+    .text-decoration-none {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.3s ease;
+    }
+
+    .text-decoration-none:hover {
+        color: #007bff;
+    }
+
+    .d-grid {
+        display: grid;
+    }
+
+    .gap-2 {
+        gap: 0.5rem;
+    }
+
+    .d-md-flex {
+        display: flex;
+    }
+
+    .justify-content-md-end {
+        justify-content: flex-end;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <h3>게시판리스트</h3>
+    <table class="table table-border text-center">
+        <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">글쓴이</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!rows || rows.length === 0) { %>
+                <tr>
+                    <td colspan="4">게시글이 없습니다.</td>
+                </tr>
+            <% } else { %>
+                <% for (var i = 0; i < rows.length; i++) {
+                    var result = rows[i];
+                %>
+                    <tr>
+                        <% if (result.del_yn == "Y") { %>
+                            <td colspan="4">삭제된 게시글입니다.</td>
+                        <% } else { %>
+                            <td><%= i + 1 %></td>
+                            <td><%= result.writer %></td>
+                            <td class="w-50"><a class="text-decoration-none" href="/board/view/<%= result.idx %>"><%= result.title %></a></td>
+                            <td><%= result.date %></td>
+                        <% } %>
+                    </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="/board/write" class="btn btn-primary">글쓰기</a>
+    </div>
+</div>
+
+<%- include("../include/footer") -%>
