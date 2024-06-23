@@ -1,12 +1,11 @@
-const mysql = require('mysql2');
-
+var mysql = require('mysql');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
 var connect = {
     host: '127.0.0.1',
     user: 'root',
-    password: '12345678',
+    password: '1234',
     database: 'SW',
     dateStrings: "date",
 };
