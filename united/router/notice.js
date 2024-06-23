@@ -48,8 +48,7 @@ router.get('/notice/write', function (req, res) {
 });
 
 router.post('/notice/write', upload.single('file'), function (req, res) {
-    var writer = req.body.writer;
-    var password = req.body.password;
+    var writer = req.session.user.nickname; // 세션에서 nickname 가져오기
     var title = req.body.title;
     var content = req.body.content;
     if (req.file) {
@@ -57,12 +56,12 @@ router.post('/notice/write', upload.single('file'), function (req, res) {
         var c_name = req.file.filename;
         var path = '/' + req.file.destination + '/';
         var size = req.file.size;
-        var data = [writer, password, title, content, o_name, c_name, path, size];
-        var sql = "insert into notice(idx, writer, password, title, content, date, del_yn, file_o_name, file_c_name, file_path, file_size) values(null,?,?,?,?,now(),'N',?,?,?,?)";
+        var data = [writer, title, content, o_name, c_name, path, size];
+        var sql = "insert into notice(idx, writer, title, content, date, del_yn, file_o_name, file_c_name, file_path, file_size) values(null,?,?,?,now(),'N',?,?,?,?)";
         db.query(sql, data);
     } else {
-        var data = [writer, password, title, content];
-        var sql = "insert into notice(idx, writer, password, title, content, date, del_yn, file_o_name, file_c_name, file_path, file_size) values(null,?,?,?,?,now(),'N',null,null,null,null)";
+        var data = [writer, title, content];
+        var sql = "insert into notice(idx, writer, title, content, date, del_yn, file_o_name, file_c_name, file_path, file_size) values(null,?,?,?,now(),'N',null,null,null,null)";
         db.query(sql, data);
     }
     res.redirect('/notice');
