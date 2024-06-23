@@ -1,0 +1,16 @@
+<%- include("include/header") -%>
+
+<div class="container">
+	<form action="upload_result" method="post" enctype="multipart/form-data">
+		<h3>파일 업로드</h3>
+		<div class="input-group mb-3">
+			<input type="file" class="form-control" name="file">
+		</div>
+		<div class="d-grid gap-2 mb-3">
+			<input type="submit" class="btn btn-primary" value="전송하기">
+		</div>
+	</form>
+</div>
+
+
+<%- include("include/footer") -%>
