@@ -3,10 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <title>응급시설 지도</title>
+<style>
+	/* 팝업 창 스타일 */
+	#popup {
+	  display: none;
+	  position: absolute;
+	  top: 0;
+	  left: 510px; /* 지도 오른쪽에 위치하도록 설정 */
+	  width: 200px;
+	  height: auto;
+	  border: 1px solid #000;
+	  background-color: #fff;
+	  z-index: 10;
+	  padding: 10px;
+	}
+  </style>
 </head>
 <body>
 	<div id="map" style="width: 500px; height: 400px;"></div> 
-	
+	<div id="popup">
+		<h3 id="popup-title">응급시설 이름</h3>
+		<p id="pharmacy-info">내용 없음</p>
+	  </div>
+
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=034c24fb1231811972e03e9d65a7cbdc"></script>
 	<script type="text/javascript">
 	
@@ -19,24 +38,67 @@
 	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 	
     // 서버에서 데이터 요청
-	fetch('http://localhost:3000/erdata')
+	fetch('http://localhost:3000/emergency')
 	.then(response => response.json())
 	.then(data => {
 	  // 받아온 데이터를 positions에 할당
 	  var positions = data;
 
-	  // 마커 생성
-	  positions.forEach(pos => {
-		var markerPosition = new kakao.maps.LatLng(pos.lat, pos.lng);
-		var marker = new kakao.maps.Marker({
-		  map: map,
-		  position: markerPosition,
-		  title: pos.emergency_name
+// 마커 생성
+positions.forEach(pos => {
+	var markerPosition = new kakao.maps.LatLng(pos.lat, pos.lng);
+	var marker = new kakao.maps.Marker({
+	  map: map,
+	  position: markerPosition,
+	  title: pos.pharmacy_name
+	});
+
+	// 마커 클릭 이벤트 등록
+	kakao.maps.event.addListener(marker, 'click', function() {
+	  var popup = document.getElementById('popup');
+	  var popupTitle = document.getElementById('popup-title');
+	  var pharmacyInfo = document.getElementById('pharmacy-info');
+
+	  // OpenAPI에서 데이터 요청
+	  var serviceKey = '=jLVyTJ0rf0FxxDWTvinhoqnLiIJVl5FxNULbbfaT2ERa7nhhxECmvRzs0GmeIWoC%2BeviTipJf69lz9SjCuLJUw%3D%3D'; // 실제 서비스 키로 교체
+	  var url = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService/getEmrrmRltmUsefulSckbdInfoInqire';
+	  var queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey;
+	  queryParams += '&' + encodeURIComponent('STAGE1') + '=' + encodeURIComponent('서울특별시'); // 필요 시 수정
+	  queryParams += '&' + encodeURIComponent('STAGE2') + '=' + encodeURIComponent('강남구'); // 필요 시 수정
+	  queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1');
+	  queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('1');
+
+	  fetch(url + queryParams)
+		.then(response => response.json())
+		.then(apiData => {
+		  var items = apiData.response.body.items;
+		  if (items && items.length > 0) {
+			var item = items[0]; // 예시로 첫 번째 아이템 사용
+
+			// 팝업 제목과 내용 업데이트
+			popupTitle.textContent = pos.pharmacy_name;
+			pharmacyInfo.innerHTML = `
+			  <strong>이름:</strong> ${item.dutyName}<br>
+			  <strong>주소:</strong> ${item.dutyAddr}<br>
+			  <strong>전화번호:</strong> ${item.dutyTel1}<br>
+			`;
+		  } else {
+			pharmacyInfo.textContent = 'No data available';
+		  }
+
+		  // 팝업 표시 설정
+		  popup.style.display = 'block';
+		})
+		.catch(error => {
+		  console.error('Error fetching data from API:', error);
+		  popupTitle.textContent = pos.pharmacy_name;
+		  pharmacyInfo.textContent = 'Error fetching data';
+		  popup.style.display = 'block';
 		});
-	  });
-	})
-	.catch(error => console.error('Error fetching data:', error));
-	
-	</script>
+	});
+  });
+})
+.catch(error => console.error('Error fetching data:', error));
+</script>
 </body>
 </html>

@@ -1,0 +1,119 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    display: flex;
+    width: 800px;
+    height: 500px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.263);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.left-container {
+    border-right: 1px solid #c3c3c3;
+}
+
+.right-container {
+    padding-left: 30px; 
+}
+
+.login-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-title h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+.login-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-type {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.input-type h3 {
+    margin-bottom: 0.5rem;
+    width: 120px;
+}
+
+.input-type input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #c3c3c3;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.cert_Num {
+    padding: 0.5rem;
+    background-color: #c3c3c3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0; 
+}
+
+.cert_Num:hover {
+    background-color: black;
+    color: white;
+}
+
+.id-btn, .find_userPwd {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #c3c3c3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.id-btn:hover, .find_userPwd:hover {
+    background-color: black;
+    color: white;
+}
+
+.separator {
+    width: 1px;
+    height: 100%;
+    background-color: #c3c3c3;
+}
