@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 관리</title>
+    <link rel="stylesheet" href="memberAdministercss.css">
+</head>
+<body>
+    <div class="memberContainer">
+        <h1>회원 관리</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>권한</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(function(user) { %>
+                    <tr>
+                        <td><%= user.user_name %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <% if (user.user_name === 'admin') { %>
+                                관리자
+                            <% } else { %>
+                                사용자
+                            <% } %>
+                        </td>
+                        <td>
+                            <button class="delete-btn" href="/signout">삭제</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+    </script>
+    
+</body>
+</html>
