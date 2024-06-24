@@ -11,9 +11,19 @@ const axios = require("axios");
 // 데이터베이스 설정
 const db = require('./lib/db');
 
-// ejs 설정
-app.set('views', path.join(__dirname, 'views'));
+// ejs
+app.set('views', __dirname + '/views');
 app.set("view engine", "ejs");
+
+// bootstrap
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // bootstrap JS
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // bootstrap CSS
+
+//jquery
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // jquery JS
+
+//img
+app.use(express.static('upload'))
 
 // static 파일 설정 (Bootstrap, jQuery, img)
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js'))); // bootstrap JS
