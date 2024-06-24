@@ -29,7 +29,28 @@ const upload = multer({
     storage: storage
 })
 
-router.get('/board', function (req, res) {
+// 미들웨어: 로그인 여부 확인
+function checkLoggedIn(req, res, next) {
+    if (!req.session.user) {
+        res.send(`<script type="text/javascript">alert("로그인이 필요합니다."); 
+                  document.location.href="/login";</script>`);
+    } else {
+        next();
+    }
+}
+
+// 미들웨어: 관리자 여부 확인
+function checkAdmin(req, res, next) {
+    var userName = req.session.user.username; // 세션에서 username 가져오기
+    if (userName === 'admin') {
+        next(); // 관리자인 경우 다음 미들웨어로 진행
+    } else {
+        res.send(`<script type="text/javascript">alert("권한이 없습니다."); 
+                  document.location.href="/board";</script>`);
+    }
+}
+
+router.get('/board', checkLoggedIn, function (req, res) {
     var sql = "select * from board";
     db.query(sql, function (err, rows) {
         if (err) {
@@ -43,16 +64,11 @@ router.get('/board', function (req, res) {
     });
 });
 
-router.get('/board/write', function (req, res) {
+router.get('/board/write', checkLoggedIn, function (req, res) {
     res.render('board/write');
 });
 
-router.post('/board/write', upload.single('file'), function (req, res) {
-    if (!req.session.user) {
-        res.send(`<script type="text/javascript">alert("로그인이 필요합니다."); 
-                  document.location.href="/login";</script>`);
-        return;
-    }
+router.post('/board/write', checkLoggedIn, upload.single('file'), function (req, res) {
     var writer = req.session.user.nickname; // 세션에서 nickname 가져오기
     var title = req.body.title;
     var content = req.body.content;
@@ -73,7 +89,7 @@ router.post('/board/write', upload.single('file'), function (req, res) {
     res.redirect('/board');
 });
 
-router.get('/board/view/:idx', function (req, res) {
+router.get('/board/view/:idx', checkLoggedIn, function (req, res) {
     var idx = req.params.idx;
     var sql = "select * from board where 1=1 and idx=?";
     db.query(sql, [idx], function (err, rows) {
@@ -96,7 +112,7 @@ router.get('/board/view/:idx', function (req, res) {
     });
 });
 
-router.get('/board/modify/:idx', function (req, res) {
+router.get('/board/modify/:idx', checkLoggedIn, checkAdmin, function (req, res) {
     var idx = req.params.idx;
     var sql = "select * from board where idx=?";
     db.query(sql, [idx], function (err, rows) {
@@ -113,12 +129,6 @@ router.get('/board/modify/:idx', function (req, res) {
         var writer = rows[0].writer || ''; // 작성자 가져오기
         var sessionUser = req.session.user; // 세션에 저장된 사용자 정보 가져오기
         
-        // 작성자와 세션에 저장된 사용자 정보의 닉네임 비교
-        if (!sessionUser || writer !== sessionUser.nickname) {
-            res.render('board/error'); // 권한이 없는 경우 에러 페이지로 이동
-            return;
-        }
-        
         var title = rows[0].title || ''; // title이 없을 경우 기본값으로 빈 문자열 설정
         var content = rows[0].content || ''; // content가 없을 경우 기본값으로 빈 문자열 설정
         
@@ -133,7 +143,7 @@ router.get('/board/modify/:idx', function (req, res) {
     });
 });
 
-router.post('/board/modify/:idx', function (req, res) {
+router.post('/board/modify/:idx', checkLoggedIn, checkAdmin, function (req, res) {
     var idx = req.params.idx;
     var writer = req.body.writer;
     var title = req.body.title;
@@ -150,7 +160,7 @@ router.post('/board/modify/:idx', function (req, res) {
     });
 });
 
-router.get('/board/delete/:idx', function (req, res) {
+router.get('/board/delete/:idx', checkLoggedIn, checkAdmin, function (req, res) {
     var idx = req.params.idx;
     var sql = "update board set del_yn='Y' where 1=1 and idx=?";
     db.query(sql, [idx], function (err) {
