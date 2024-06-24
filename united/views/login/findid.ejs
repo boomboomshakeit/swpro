@@ -1,108 +1,104 @@
 <!DOCTYPE html>
 <html>
+<style>
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    }
+
+
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.263);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.login-box {
+    padding: 20px;
+}
+
+.login-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-info {
+    margin-bottom: 1rem;
+}
+
+.input-type {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.input-type h3 {
+    margin-right: 10px;
+    width: 100px;
+    font-size: 1rem;
+}
+
+.input-type input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.id-btn {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #c3c3c3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.id-btn:hover {
+    background-color: black;
+}
+
+</style>
 <head>
     <meta charset="UTF-8">
-    <title>비밀번호 찾기</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        .login-container {
-            width: 80%;
-            max-width: 600px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px;
-        }
-        .login-header {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .input-type {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .input-type h3 {
-            width: 120px;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        .input-type input {
-            flex: 1;
-            padding: 0.5rem;
-            border: 1px solid #c3c3c3;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .cert_Num {
-            padding: 0.5rem;
-            background-color: #c3c3c3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            flex-shrink: 0;
-        }
-        .cert_Num:hover {
-            background-color: black;
-        }
-        .find_userPwd {
-            width: 100%;
-            padding: 0.7rem;
-            background-color: #c3c3c3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            margin-top: 20px;
-        }
-        .find_userPwd:hover {
-            background-color: black;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디 찾기</title>
+    
 </head>
 <body>
     <div class="login-container">
-        <div class="login-header">
-            <h3>비밀번호 찾기</h3>
-        </div>
-        <form action="/findpw" method="post">
-            <div class="login-info">
-                <div class="input-type">
-                    <h3>이름</h3>
-                    <input type="text" placeholder="이름 입력">
+        <div class="form-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h3>아이디 찾기</h3>
                 </div>
-                <div class="input-type">
-                    <h3>이메일</h3>
-                    <input type="email" placeholder="이메일 입력">
+                <div class="login-info">
+                    <div class="input-type">
+                        <h3>이메일</h3>
+                        <input type="email" placeholder="이메일 입력">
+                    </div>
+                    <div class="input-type">
+                        <h3>전화번호</h3>
+                        <input type="text" placeholder="전화번호 입력">
+                    </div>
                 </div>
-                <div class="input-type">
-                    <h3>전화번호</h3>
-                    <input type="text" placeholder="전화번호 입력">
-                </div>
-                <div class="input-type">
-                    <h3>인증번호</h3>
-                    <input type="text" placeholder="인증번호 입력">
-                    <button type="button" class="cert_Num">인증번호 받기</button>
-                </div>
+                <button class="id-btn">아이디 찾기</button>
             </div>
-            <button type="submit" class="find_userPwd">비밀번호 찾기</button>
-        </form>
+        </div>
     </div>
 </body>
 </html>
