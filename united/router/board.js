@@ -7,10 +7,10 @@ router.use(express.urlencoded({
     extended: true
 }));
 
-//fs
+// fs
 var fs = require('fs');
 
-//multer
+// multer
 var multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -73,7 +73,6 @@ router.post('/board/write', upload.single('file'), function (req, res) {
     res.redirect('/board');
 });
 
-
 router.get('/board/view/:idx', function (req, res) {
     var idx = req.params.idx;
     var sql = "select * from board where 1=1 and idx=?";
@@ -89,28 +88,9 @@ router.get('/board/view/:idx', function (req, res) {
     });
 });
 
-router.get('/board/:type/:idx', function (req, res) {
-    var type = req.params.type;
+router.get('/board/modify/:idx', function (req, res) {
     var idx = req.params.idx;
-    var title;
-    if (type == "modify") {
-        title = "수정";
-    }
-    if (type == "delete") {
-        title = "삭제";
-    }
-    res.render('board/auth', {
-        idx: idx,
-        type: type,
-        title: title
-    });
-});
-
-router.post('/board/:type/:idx', function (req, res) {
-    var type = req.params.type;
-    var idx = req.params.idx;
-    var password = req.body.password;
-    var sql = "select idx from board where 1=1 and idx=?";
+    var sql = "select * from board where idx=?";
     db.query(sql, [idx], function (err, rows) {
         if (err) {
             console.error('쿼리 실행 중 오류 발생', err);
@@ -118,58 +98,32 @@ router.post('/board/:type/:idx', function (req, res) {
             return;
         }
         if (rows.length === 0) {
-            res.render('board/error');
-        } else {
-            var sql = "select writer from board where 1=1 and idx=?";
-            db.query(sql, [idx], function (err, rows) {
-                if (err) {
-                    console.error('쿼리 실행 중 오류 발생', err);
-                    res.status(500).send('서버 오류');
-                    return;
-                }
-                var writer = rows[0].writer;
-                // 여기서 필요에 따라 비밀번호를 확인하세요
-                if (type == "modify") {
-                    var sql = "select * from board where 1=1 and idx=?";
-                    db.query(sql, [idx], function (err, rows) {
-                        if (err) {
-                            console.error('쿼리 실행 중 오류 발생', err);
-                            res.status(500).send('서버 오류');
-                            return;
-                        }
-                        res.render('board/modify', {
-                            head: "글 수정하기",
-                            idx: idx,
-                            writer: writer,
-                            title: rows[0].title,
-                            content: rows[0].content
-                        });
-                    });
-                }
-                if (type == "delete") {
-                    var sql = "update board set del_yn='Y' where 1=1 and idx=?";
-                    db.query(sql, [idx], function (err) {
-                        if (err) {
-                            console.error('쿼리 실행 중 오류 발생', err);
-                            res.status(500).send('서버 오류');
-                            return;
-                        }
-                        res.redirect('/board');
-                    });
-                }
-            });
+            res.render('board/error'); // 해당 글이 없는 경우 에러 페이지로 이동
+            return;
         }
+        
+        var writer = rows[0].writer || ''; // writer가 없을 경우 기본값으로 빈 문자열 설정
+        var title = rows[0].title || ''; // title이 없을 경우 기본값으로 빈 문자열 설정
+        var content = rows[0].content || ''; // content가 없을 경우 기본값으로 빈 문자열 설정
+        
+        res.render('board/modify', {
+            head: "글 수정하기",
+            idx: idx,
+            writer: writer,
+            title: title,
+            content: content
+        });
     });
 });
 
 
-router.post('/board/modify/:idx/ok', function (req, res) {
+router.post('/board/modify/:idx', function (req, res) {
     var idx = req.params.idx;
     var writer = req.body.writer;
     var title = req.body.title;
     var content = req.body.content;
     var data = [writer, title, content, idx];
-    var sql = "update board set writer=?,title=?,content=?,date=now() where 1=1 and idx=?";
+    var sql = "update board set writer=?, title=?, content=?, date=now() where idx=?";
     db.query(sql, data, function (err) {
         if (err) {
             console.error('쿼리 실행 중 오류 발생', err);
@@ -180,6 +134,18 @@ router.post('/board/modify/:idx/ok', function (req, res) {
     });
 });
 
+router.get('/board/delete/:idx', function (req, res) {
+    var idx = req.params.idx;
+    var sql = "update board set del_yn='Y' where 1=1 and idx=?";
+    db.query(sql, [idx], function (err) {
+        if (err) {
+            console.error('쿼리 실행 중 오류 발생', err);
+            res.status(500).send('서버 오류');
+            return;
+        }
+        res.redirect('/board');
+    });
+});
 
 router.get('/:path/:dir/:c_name', function (req, res) {
     var url = req.params.path + '/' + req.params.dir + '/' + req.params.c_name;
