@@ -45,8 +45,8 @@ app.use(session({
 
 // 메인 화면
 app.get('/', (req, res) => {
-    res.locals.user = req.session.user || {}; // 세션에 사용자 정보가 없을 경우를 대비하여 user 변수 설정
-    res.render('main'); // main.ejs 파일을 렌더링
+    const user = req.session.user || null;
+    res.render('main', { user: user });
 });
 
 // 관리자 페이지
@@ -153,6 +153,7 @@ app.get('/login', (req, res) => {
     res.render('login/login');
 });
 
+// 로그인 프로세스
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 

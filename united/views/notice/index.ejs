@@ -1,8 +1,6 @@
 <%- include("../include/header") -%>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
-
 <div class="container">
     <h3>게시판리스트</h3>
     <table class="table table-border text-center">
@@ -29,7 +27,7 @@
                         <% } else { %>
                             <td><%= i + 1 %></td>
                             <td><%= result.writer %></td>
-                            <td class="w-50"><a class="text-decoration-none" href="/board/view/<%= result.idx %>"><%= result.title %></a></td>
+                            <td class="w-50"><a class="text-decoration-none" href="/notice/view/<%= result.idx %>"><%= result.title %></a></td>
                             <td><%= result.date %></td>
                         <% } %>
                     </tr>
@@ -38,7 +36,7 @@
         </tbody>
     </table>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a href="/board/write" class="btn btn-primary">글쓰기</a>
+        <a href="/notice/write" class="btn btn-primary">글쓰기</a>
     </div>
 </div>
 

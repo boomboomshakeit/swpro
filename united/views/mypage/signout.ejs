@@ -5,7 +5,7 @@
                                 <input type="hidden" name="idx" id="idx" th:value="${session.LoginIn.idx}">
                             </form>
                             <script th:if="${msg != null}" th:inline="javascript">
-                                alert([[${msg}]]);
+                                alert([[$,{msg}]]);
                             </script>
                         </div>
                     </div>
