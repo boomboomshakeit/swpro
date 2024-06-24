@@ -82,8 +82,16 @@ router.get('/board/view/:idx', function (req, res) {
             res.status(500).send('Server error');
             return;
         }
+        var result = rows[0] || {}; // rows[0]가 undefined일 경우 빈 객체로 대체
+        
+        var sessionUser = req.session.user; // 세션에서 사용자 정보 가져오기
+        var writer = result.writer || ''; // 작성자 가져오기
+        
         res.render('board/view', {
-            result: rows[0] || {} // rows[0]가 undefined일 경우 빈 객체로 대체
+            result: result,
+            sessionUser: sessionUser, // 세션 사용자 정보 전달
+            writer: writer, // 작성자 정보 전달
+            idx: idx // 게시글 번호 전달
         });
     });
 });
@@ -102,7 +110,15 @@ router.get('/board/modify/:idx', function (req, res) {
             return;
         }
         
-        var writer = rows[0].writer || ''; // writer가 없을 경우 기본값으로 빈 문자열 설정
+        var writer = rows[0].writer || ''; // 작성자 가져오기
+        var sessionUser = req.session.user; // 세션에 저장된 사용자 정보 가져오기
+        
+        // 작성자와 세션에 저장된 사용자 정보의 닉네임 비교
+        if (!sessionUser || writer !== sessionUser.nickname) {
+            res.render('board/error'); // 권한이 없는 경우 에러 페이지로 이동
+            return;
+        }
+        
         var title = rows[0].title || ''; // title이 없을 경우 기본값으로 빈 문자열 설정
         var content = rows[0].content || ''; // content가 없을 경우 기본값으로 빈 문자열 설정
         
@@ -111,11 +127,11 @@ router.get('/board/modify/:idx', function (req, res) {
             idx: idx,
             writer: writer,
             title: title,
-            content: content
+            content: content,
+            sessionUser: sessionUser // 세션 사용자 정보 전달
         });
     });
 });
-
 
 router.post('/board/modify/:idx', function (req, res) {
     var idx = req.params.idx;
@@ -143,7 +159,7 @@ router.get('/board/delete/:idx', function (req, res) {
             res.status(500).send('서버 오류');
             return;
         }
-        res.redirect('/board');
+        res.redirect('/board'); // 삭제 후 board 페이지로 리다이렉트
     });
 });
 

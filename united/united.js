@@ -104,16 +104,11 @@ app.get('/signup', (req, res) => {
 
 // 회원가입 프로세스
 app.post('/signup', (req, res) => {
-    const { username, email, nickname, phone, password, confirm_password } = req.body;
+    const { username, email, password, nickname, phone} = req.body;
 
     // 필수 항목 검사
-    if (!username || !email || !password || !nickname || !phone || !confirm_password) {
+    if (!username || !email || !password || !nickname || !phone) {
         return res.status(400).send("모든 필수 항목을 입력하세요.");
-    }
-
-    // 비밀번호 일치 여부 확인
-    if (password !== confirm_password) {
-        return res.status(400).send("비밀번호가 일치하지 않습니다.");
     }
 
     // 비밀번호 해싱
