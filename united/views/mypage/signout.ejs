@@ -1,24 +1,82 @@
-                                </ul>
-                                <div class="btn-box">
-                                    <input class="delete-btn" type="submit" value="회원탈퇴">
-                                </div>
-                                <input type="hidden" name="idx" id="idx" th:value="${session.LoginIn.idx}">
-                            </form>
-                            <script th:if="${msg != null}" th:inline="javascript">
-                                alert([[$,{msg}]]);
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 탈퇴</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .buttons a, .buttons form button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #d9534f;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .buttons a {
+            background-color: #5bc0de;
+        }
+
+        .buttons form button {
+            background-color: #d9534f;
+        }
+
+        .buttons a:hover, .buttons form button:hover {
+            background-color: #c9302c;
+        }
+
+        .buttons a:hover {
+            background-color: #31b0d5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>회원 탈퇴</h2>
+        <p>정말로 회원 탈퇴를 하시겠습니까?</p>
+        <div class="buttons">
+            <a href="/mypage">취소</a>
+            <form action="/signout" method="post">
+                <button type="submit">회원 탈퇴</button>
+            </form>
         </div>
-    </main>
-
-    <footer th:insert="~{fragment/footer::footer_a}">
-
-    </footer>
-
-   
+    </div>
 </body>
-
 </html>

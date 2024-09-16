@@ -104,16 +104,11 @@ app.get('/signup', (req, res) => {
 
 // 회원가입 프로세스
 app.post('/signup', (req, res) => {
-    const { username, email, nickname, phone, password, confirm_password } = req.body;
+    const { username, email, password, nickname, phone} = req.body;
 
     // 필수 항목 검사
-    if (!username || !email || !password || !nickname || !phone || !confirm_password) {
+    if (!username || !email || !password || !nickname || !phone) {
         return res.status(400).send("모든 필수 항목을 입력하세요.");
-    }
-
-    // 비밀번호 일치 여부 확인
-    if (password !== confirm_password) {
-        return res.status(400).send("비밀번호가 일치하지 않습니다.");
     }
 
     // 비밀번호 해싱
@@ -450,25 +445,31 @@ app.get('/signout', (req, res) => {
 
 // 회원 탈퇴 요청 처리
 app.post('/signout', (req, res) => {
-    const userEmail = req.session.user.email;
-
-    // 데이터베이스에서 사용자 정보 삭제
-    db.query('DELETE FROM usertable WHERE email = ?', [userEmail], (err, results) => {
-        if (err) {
-            console.error('회원 탈퇴 오류:', err);
-            res.status(500).send('회원 탈퇴 실패');
-        } else {
-            // 세션에서 사용자 정보 삭제
-            req.session.destroy(err => {
+    if (!req.session.user) {
+        res.redirect('/login/login');
+    } else {
+        var userId = req.session.user.email;
+        var sql = "DELETE FROM usertable WHERE email = ?";
+        db.query(sql, [userId], function(err) {
+            if (err) {
+                console.error('쿼리 실행 중 오류 발생', err);
+                res.status(500).send('서버 오류');
+                return;
+            }
+            req.session.destroy(function(err) {
                 if (err) {
-                    console.error('세션 삭제 오류:', err);
-                    res.status(500).send('회원 탈퇴 실패');
-                } else {
-                    res.redirect('/'); // 홈 페이지로 리다이렉트
+                    console.error('세션 삭제 중 오류 발생', err);
+                    res.status(500).send('서버 오류');
+                    return;
                 }
+                // 회원 탈퇴 성공 팝업창을 클라이언트에게 보내기
+                res.send(`<script type="text/javascript">
+                            alert("회원 탈퇴가 완료되었습니다."); 
+                            window.location.href = "/";
+                         </script>`);
             });
-        }
-    });
+        });
+    }
 });
 
 // 로그아웃 라우트

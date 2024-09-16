@@ -47,15 +47,24 @@
 </style>
 
 <div class="container content-container">
-    <h3 class="content-title">게시판글보기</h3>
+    <h3 class="content-title">게시판 글 보기</h3>
 
     <div class="container">
         <div class="d-flex justify-content-between mb-3">
             <p>작성일 : <%= result.date %></p>
             <p>게시글번호 : <%= result.idx %></p>
             <div>
-                <a class="btn btn-secondary btn-sm" href="/board/modify/<%= result.idx %>">수정</a>
-                <a class="btn btn-danger btn-sm" href="/board/delete/<%= result.idx %>">삭제</a>
+                <% if (sessionUser && sessionUser.nickname === writer) { %>
+                    <!-- 수정 버튼 보이기 -->
+                    <a href="/board/modify/<%= idx %>" class="btn btn-primary">수정</a>
+                    
+                    <!-- 삭제 버튼 보이기 -->
+                    <a href="/board/delete/<%= idx %>" class="btn btn-danger">삭제</a>
+                <% } else if (sessionUser && sessionUser.username === 'admin') { %>
+                    <!-- admin 계정인 경우 수정과 삭제 모두 허용 -->
+                    <a href="/board/modify/<%= idx %>" class="btn btn-primary">수정</a>
+                    <a href="/board/delete/<%= idx %>" class="btn btn-danger">삭제</a>
+                <% } %>
             </div>
         </div>
         <div class="mb-3 row">

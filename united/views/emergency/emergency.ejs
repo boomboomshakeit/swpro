@@ -38,14 +38,16 @@
         }
 
         header h1 {
-            margin: 0;
+            margin-left: 40px;
             font-size: 1.5em;
             color: #333;
         }
 
         .nav {
             display: flex;
-            gap: 15px;
+            gap: 5px;
+            align-items: center;
+            margin-right: 40px;
         }
 
         .nav a {
@@ -181,7 +183,7 @@
 <body>
     <header>
         <div class="container">
-            <h1>사이트이름</h1>
+            <h1><a href="/">응급실 현황</a></h1>
             <div class="nav">
                 <a href="signup">회원가입</a> |
                 <a href="login">로그인</a> |
@@ -259,8 +261,8 @@
 
                             let emergency_location = new naver.maps.LatLng(it.wgs84Lat, it.wgs84Lon);
 
-                            let dutyHaynText = (dutyHayn === '1') ? "가능" : "불가";
-                            let dutyErynText = (dutyEryn === '1') ? "가능" : "불가";
+                            let dutyHaynText = (dutyHayn === 1) ? "가능" : "불가";
+                            let dutyErynText = (dutyEryn === 1) ? "가능" : "불가";
 
                             let marker = new naver.maps.Marker({
                                 map: map,
